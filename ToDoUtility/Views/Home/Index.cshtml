@@ -1,0 +1,113 @@
+﻿@model IList<ToDo.Models.Entities.UserToDo>
+@{
+    ViewBag.Title = "Index";
+    var count = 1;
+}
+<!-- Begin Page Content -->
+<div>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">ToDo List</h6>
+        </div>
+        <div class="card-header py-3">
+            <input type="button" class="btn btn-success x_new_tasks" data-toggle="modal" data-target="#x_new_task" value="New Task" />
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>SNo</th>
+                            <th>Task Title</th>
+                            <th>Due Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (ToDo.Models.Entities.UserToDo toDo in Model)
+                        {
+                            var cls = "";
+                            if (toDo.Status) { cls = "completed"; }
+                            <tr class="taskRow @cls" data-area-id="@toDo.ID">
+                                <td>@count</td>
+                                <td class="tdTaskTitle">@toDo.ToDoName</td>
+                                <td class="tdDueDt">@toDo.DueDate.ToShortDateString()</td>
+                                <td>
+                                    @if (!toDo.Status)
+                                    {
+                                        <a href="#" data-toggle="modal" data-target="#x_new_task" class="editTask">
+                                            <i class="fas fa-fw fa-pencil-alt "></i>
+                                        </a>
+                                        <a href="#" class="completeTask">
+                                            <i class="fas fa-fw fa-eye "></i>
+                                        </a>
+                                    }
+                                    <a href="#" class="deleteTask">
+                                        <i class="fas fa-fw fa-trash "></i>
+                                    </a>
+
+                                </td>
+                            </tr>
+                            count++;
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="x_new_task" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Create Task</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="newTask">
+                <form id="frmTask">
+                    <div class="form-group" hidden>
+                        <label class="col-form-label">ID</label>
+                        <input type="text" class="form-control taskid" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Title</label>
+                        <input type="text" class="form-control tasktitle" name="tasktitle">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Due Date</label>
+                        <input type="text" class="form-control datepicker taskduedt" name="duedte">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm x-mk-task">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .completed {
+        background-color: lightgreen;
+    }
+</style>
+
+@section scripts{
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/app.js"></script>
+    <script>
+        $('.datepicker').datepicker({
+            uiLibrary: 'bootstrap4'
+        });
+    </script>
+
+
+}
